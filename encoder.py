@@ -55,9 +55,9 @@ def save_wav(filename, freqs):
         wav.writeframes(pcm)
 
 if __name__ == "__main__":
-    print(Fore.BLUE + "DataOverFM encoder v1.0.0 by nothavoc (ported from pied-piper)")
+    print(Fore.BLUE + "DataOverFM encoder v1.1.0 by nothavoc (ported from pied-piper)")
     message = input(Fore.RESET + "Insert the text to encode: ")
-    frequency = input("Insert the frequency to transmit on in MHz (N to just save as .wav): ")
+    frequency = input("Insert the frequency to transmit on in MHz, from 76 to 108 (N to just save as .wav): ")
     if frequency.upper() == "N":
         print(Fore.GREEN + "N selected, will just save as .wav")
         filename = input(Fore.RESET + "Input a name for the file: ")
@@ -72,21 +72,24 @@ if __name__ == "__main__":
         audio = encode_message(message)
         save_wav("temp.wav", audio)
         file_path = os.getcwd() + "/temp.wav"
+        print("Press CTRL+C to stop.")
         try:
-            result = subprocess.run([
-                "sudo", "fm_transmitter",
-                "-f", str(frequency),
+            result = subprocess.Popen([
+                "sudo", "pi_fm_rds",
+                "-freq", str(frequency), "-audio",
                 file_path
-            ], cwd=os.getcwd(), text=False, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            ], cwd=os.getcwd(), text=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            input("Press Enter to stop...\n")
+            result.terminate()
             print(Fore.GREEN + "Success:", result.stdout)
             print(Fore.RESET)
         except subprocess.CalledProcessError as e:
-            print(Fore.RED + "Error running fm_transmitter:")
+            print(Fore.RED + "Error running PiFmRds:")
             print(Fore.RED + "Return code:", e.returncode)
             print(Fore.RED + "Output:", e.output)
             print(Fore.RED + "Error output:", e.stderr)
         except FileNotFoundError:
-            print(Fore.RED + "fm_transmitter binary not found! Did you build it and put it in PATH?")
+            print(Fore.RED + "PiFmRds binary not found! Did you build it and put it in PATH?")
         except Exception as e:
             print(Fore.RED + "Unexpected error:", e)
         os.remove("temp.wav")
