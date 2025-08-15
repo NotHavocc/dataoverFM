@@ -6,14 +6,28 @@ results depend on radio speaker quality, decoder mic quality, and transmitter an
 
 ## install
 ```
-sudo git clone https://github.com/markondej/fm_transmitter
-sudo apt-get install gcc g++ make
-cd fm_transmitter
-sudo make
-sudo cp fm_transmitter /usr/local/bin/
-sudo chmod +x /usr/local/bin/fm_transmitter
+git clone https://github.com/ChristopheJacquet/PiFmRds.git
+cd PiFmRds/src
+make clean
+make
+sudo cp pi_fm_rds /usr/local/bin/
+sudo chmod +x /usr/local/bin/pi_fm_rds
 ```
-packages:
+for pi zero users that are having issues with compiling (getting issues like "expr: syntax error: unexpected argument ‘1’"):\
+edit the makefile like this:
+```
+#RPI_VERSION := $(shell cat /proc/device-tree/model | grep -a -o "Raspberry\sPi\s[0-9]" | grep -o "[0-9]")
+RPI_VERSION = 3
+```
+then do this again:
+```
+make clean
+make
+sudo cp pi_fm_rds /usr/local/bin/
+sudo chmod +x /usr/local/bin/pi_fm_rds
+```
+
+## packages
 ```
 pip install colorama numpy reedsolo
 ```
