@@ -2,6 +2,8 @@
 
 ported from [pied-piper](https://github.com/rraval/pied-piper)
 
+results depend on radio speaker quality, decoder mic quality, and transmitter antenna quality.
+
 ## install
 ```
 sudo git clone https://github.com/markondej/fm_transmitter
