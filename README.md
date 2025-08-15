@@ -1,5 +1,7 @@
 # basically text over FM
 
+ported from [pied-piper](https://github.com/rraval/pied-piper)
+
 ## install
 ```
 sudo git clone https://github.com/markondej/fm_transmitter
